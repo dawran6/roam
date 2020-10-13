@@ -1,0 +1,18 @@
+#+title: How To Take Smart Notes With Org-mode
+
+- tags :: [[file:20201013122519-org_mode.org][Org-Mode]], [[file:20201013122609-note_taking.org][Note-taking]]
+- source :: [[https://blog.jethro.dev/posts/how_to_take_smart_notes_org/][How To Take Smart Notes With Org-mode]]
+
+- 2 types of notes: Fleeting notes and Project Notes
+- Fleeting Notes: use [[https://github.com/bastibe/org-journal][org-journal]] (=SPC n j j=)
+
+#+begin_quote
+Notes aren't a record of my thinking process. They are my thinking
+process. -- Richard Feynman
+#+end_quote
+
+#+BEGIN_QUOTE
+The primary purpose of note-taking should not be for storing ideas, but for
+developing them. When we take notes, we should ask: “In what context do I want
+to see this note again?"
+#+END_QUOTE
