@@ -1,1 +1,6 @@
 #+title: Org-Mode
+
+- tags :: [[file:20201015022553-doom_emacs.org][Doom Emacs]]
+
+* Org-journal
+- Source :: https://github.com/bastibe/org-journal

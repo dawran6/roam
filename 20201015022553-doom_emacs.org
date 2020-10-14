@@ -1,0 +1,10 @@
+#+title: Doom Emacs
+
+- Source :: https://github.com/hlissner/doom-emacs
+- [[doom-docs:getting_started.org][Getting Started Guide]]
+- https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org
+
+* Design principles:
+- Fast
+- Close to metal
+- Opinionated, but not stubborn
