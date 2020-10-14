@@ -2,6 +2,8 @@
 
 - tags :: [[file:20201015031431-programming_languages.org][Programming Languages]]
 
+* REPL
+** [[https://purelyfunctional.tv/courses/repl-driven-development-in-clojure/][Repl-Driven Development in Clojure]]
 * Learning materials
 - [[https://iloveponies.github.io/120-hour-epic-sax-marathon/sudoku.html][Sudoku]]
 - [[https://matthewdowney.github.io/astar-in-clojure-find-k-shortest-paths.html][A* in Clojure to Lazily Find the Shortest Paths]]
