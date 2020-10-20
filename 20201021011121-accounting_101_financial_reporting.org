@@ -1,0 +1,89 @@
+#+title: Accounting 101 - Financial Reporting
+
+- tags :: [[file:20201021012320-accounting.org][Accounting]]
+
+* Assets = Liability + Equity
+** Left side
+- Increase: "Debit"
+- Decrease: "Credit"
+** Right side
+- Increase: "Credit"
+- Decrease: "Debit"
+
+* Assets
+Any resource that provides eonomic value to an individual.
+
+** Examples
+- Property
+  - Real estate
+- Furniture & Equipment
+  - Computures
+- Inventaory
+- Cash
+- Art/Collectable
+- Investment
+  - Shares
+- Leashold improvements
+- Accounts Receivable
+- Intellectual Property/Patents/Copyright/Trademarks
+- Goodwill
+- Prepaid
+
+* Liabilities
+Financial debts or obligations to third parties which can be exchanged through
+money, goods, or services. It's everything that you legally owe with pretty
+specific terms based on a contracts of agreements.
+
+** Examples
+- Wages Payable
+- Accounts Payable
+- Debt/Loans
+- Mortgage
+- Credit Balance
+- Taxes Payable
+- Lines of Credit
+- Deffered Revenue
+  The opposite of Account Receivable.
+
+* Equity
+This is the tricky one. The amount of funds contributed to the company that are
+not held in liabilities. Sounds like a pretty covenient definition, so here's
+what it consists of:
+
+- Contributed Capital
+  - The ownders put into the company
+- Shares/Stock
+  - The opposite of investments
+  - both common and preferred
+- Retained Earnings
+  - Revenue - Expenses = Net Income
+  - Which is made up of money the business has made (or lost) for itself.
+
+* Profit and loss
+- Revenue - Expenses = Profit aka "Net Income"
+
+Different types of income like "Gross Income", "Operating Income", and "Net
+Income"
+- "Gross Income" - Revenue - Cost of Good Sold (wood + the labor to build the
+  table)
+- "Gross Margin"
+- "Operating Income" - Gross Income - Sells & Marketing, Administrative, ...
+- "Net Income" - Operating Income - tax, ...
+- "Revenue"
+- "Cost of Good Sold" - Systems and support team
+- "Sells and Marketing"
+- "Administrative"
+
+* Revenue vs ARR
+Revenue includes any income generated from normal business activities from the
+sale of goods and services to customers.
+
+Annual Recurring Revenue is the amount that will recur in subsequent terms,
+which is supported by an "auto-renew" clause in customer contracts.
+
+* Why is ARR Important?
+** The ability to plan for future growth
+- Predictable flow of funds
+- We would not be able to budget future revenues reliable w/o ARR
+** Industry statndard
+- Comparison to other companies usually based on ARR and ARR growth
