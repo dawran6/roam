@@ -6,3 +6,4 @@
 - RSA
 - TLS 1.2
 - TLS 1.3
+- [[https://ssl-config.mozilla.org/][Mozilla's SSL configuration generator]]
