@@ -2,6 +2,27 @@
 
 - tags :: [[file:20201015031431-programming_languages.org][Programming Languages]]
 
+* Dynamic Scope vs Lexical Scope
+** Example: [[https://youtu.be/zp0OEDcAro0?t=513][Condition Systems in an Exceptional Language - Chris Houser (8:33)]]
+
+#+BEGIN_SRC clojure
+(defn parse-log-entry [text]
+  ...)
+
+(defn parse-log-file [log]
+  (let [lines (with-open [stream (io/reader log)]
+                (doall (line-seq stream)))]
+    (keep (parse-log-entry lines))))
+#+END_SRC
+
+The body of =parse-log-entry= is in the *dynamic scope* of the =parse-log-file=
+function. Whereas the =parse-log-file= function provides the symbol =lines=
+within the *lexical scope* of the =let=-binding.
+
+** Dynamic binding
+- [[https://clojure.org/reference/vars][Vars and the Global Environment]]
+By default Vars are static, but Vars can be marked as dynamic to allow
+per-thread bindings via the macro binding.
 * REPL
 ** [[https://purelyfunctional.tv/courses/repl-driven-development-in-clojure/][Repl-Driven Development in Clojure]]
 * Learning materials
