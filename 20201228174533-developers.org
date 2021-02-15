@@ -1,0 +1,3 @@
+#+title: Developers
+
+- [[https://writingfordevelopers.substack.com/p/writing-tips-for-developers][Writing Tips for Developers]]
