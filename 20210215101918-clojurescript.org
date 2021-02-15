@@ -1,0 +1,163 @@
+#+title: ClojureScript
+
+There are 4 main steps in the [[http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/][ClojureScript compiler pipeline]]: reader, analyzer,
+compiler (emitter), and closure.
+
+#+DOWNLOADED: http://farm8.staticflickr.com/7112/7110268589_cd20258b6e_d.jpg @ 2021-02-15 20:35:21
+[[file:img/7110268589_cd20258b6e_d.jpg]]
+Image from: http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/
+
+* Reader
+
+- Converts source text to data structure
+- In a different library [[https://github.com/clojure/tools.reader][clojure.tools.reader]]
+
+Things happens in the reading phase:
+
+- Fully-qualified keywords are expanded in the reader step, i.e. =::a-keyword=
+  gets expanded to =:cljs.user/a-keyword= during the reader step.
+- Same as syntax quoting with =`=, i.e. symbol =`abc= expanded to symbol
+  =cljs.user/abc=.
+- Same as gensym's like ~`abc#~ gets expanded to ~`abc__3__auto__~.
+- Meta data is read at the reader level too.
+- Symbolic values like: =##Inf=, and =##NaN=.
+- Reader conditionals: =#?(:cljs 1 :clj 2)=.
+
+* Analyzer
+
+- Converts data structure to AST
+- The largest part of the pipeline
+
+
+#+DOWNLOADED: http://farm6.staticflickr.com/5458/6965437392_e3f451c048_d.jpg @ 2021-02-15 20:34:33
+[[file:img/6965437392_e3f451c048_d.jpg]]
+Image from: http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/
+
+Example of analyzer result:
+
+#+begin_src clojurescript
+
+  (require '[cljs.js])
+  (require '[clojure.pprint :refer [pprint])
+  ;; analyze-str reads a string and turn it into an AST. Basically it does the
+  ;; reading and analyzing steps in one shot.
+  (cljs.js/analyze-str (cljs.js/empty-state) "1" nil {:context :expr} pprint)
+
+#+end_src
+
+A lot of the warnings we see while compiling clj code comes from the
+analyzer. For example, the warning: =WARNING: Use of undeclared Var cljs.user/bar
+at line 1= comes from the analyzer. To see all the analyzer warnings, search for
+=(defmethod error-message= in the name space =cljs.analyzer=.
+
+Usually, CLJS is very lax about errors so most of the time, the analyzer will
+only produce warnings. However, there are ways to turn those warnings into
+errors.
+
+The analyzer is a big loop going through all the forms in the files that causes
+side effects (states) on an atom. See:
+
+#+begin_src clojurec
+
+  (loop [ns nil forms (seq (forms-seq* rdr (util/path res)))]
+    (if forms
+      (let [form (first forms)
+            env  (assoc env :ns (get-namespace *cljs-ns*))
+            ast  (analyze env form nil opts)]
+        (cond
+          (= (:op ast) :ns)
+          (recur (:name ast) (next forms))
+
+          (and (nil? ns) (= (:op ast) :ns*))
+          (recur (gen-user-ns res) (next forms))
+
+          :else
+          (recur ns (next forms))))
+      ns))
+
+#+end_src
+
+The compiler state is in:
+
+#+begin_src clojurec
+
+  (require '[cljs.env])
+  @cljs.env/*compiler*
+
+#+end_src
+
+Clojure does type inference during the analyzer step. The purpose isn't to block
+compilation on type errors but for better performances. Type inferences can be
+done in the form of:
+
+- Type hinting, i.e. in =(defn foo [^boolean x] (if x 1 2))=, the compiler knows x
+  would be a Boolean and bypass the =cljs.core.truth_= checking.
+- Predicate inducing, i.e. in =(defn foo [x] (if (string? x) (str x "abc") 2))=,
+  the type of =x= in the truthy branch is induced by the ~string?~ branch.
+
+A little bit of analyzer code for parsing the =if= form:
+
+#+begin_src clojurec
+
+  (defmethod parse 'if
+    [op env [_ test then else :as form] name _]
+    (when (< (count form) 3)
+      (throw (compile-syntax-error env "Too few arguments to if" 'if)))
+    (when (> (count form) 4)
+      (throw (compile-syntax-error env "Too many arguments to if" 'if)))
+    (let [test-expr (disallowing-recur (analyze (assoc env :context :expr) test))
+          then-expr (allowing-redef (analyze (set-test-induced-tags env test) then))
+          else-expr (allowing-redef (analyze env else))]
+      {:env env :op :if :form form
+       :test test-expr :then then-expr :else else-expr
+       :unchecked *unchecked-if*
+       :children [:test :then :else]}))
+
+#+end_src
+
+The macro expansion also happens in the analyzer (or before the
+analyzer). Search for =mac-var= or the =macroexpand-1*= function for more.
+
+* Emitter
+
+- Spits out JavaScript in strings.
+- In the =cljs.compiler= ns.
+
+#+begin_src clojurec
+
+  (defmethod emit* :if
+    [{:keys [test then else env unchecked]}]
+    (let [context (:context env)
+          checked (not (or unchecked (safe-test? env test)))]
+      (cond
+        (truthy-constant? test) (emitln then)
+        (falsey-constant? test) (emitln else)
+        :else
+        (if (= :expr context)
+          (emits "(" (when checked "cljs.core.truth_") "(" test ")?" then ":" else ")")
+          (do
+            (if checked
+              (emitln "if(cljs.core.truth_(" test ")){")
+              (emitln "if(" test "){"))
+            (emitln then "} else {")
+            (emitln else "}"))))))
+
+#+end_src
+
+Intrinsics: emitting code that's more native (and faster) in JavaScript. For
+example, in the ~(defmethod emit* :invoke~ function:
+
+#+begin_src clojurec
+
+  ;; in the outter let bindings:
+  opt-count? (and (= (:name info) 'cljs.core/count)
+                  (boolean ('#{string array} first-arg-tag)))
+
+  ;; the condition above, we can emit ((variable).length) directly, instead of
+  ;; (cljs.core.count(variable))
+  opt-count?
+  (emits "((" (first args) ").length)")
+
+#+end_src
+
+* Closure
