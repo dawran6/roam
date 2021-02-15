@@ -5,6 +5,7 @@ compiler (emitter), and closure.
 
 #+DOWNLOADED: http://farm8.staticflickr.com/7112/7110268589_cd20258b6e_d.jpg @ 2021-02-15 20:35:21
 [[file:img/7110268589_cd20258b6e_d.jpg]]
+
 Image from: http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/
 
 * Reader
@@ -31,6 +32,7 @@ Things happens in the reading phase:
 
 #+DOWNLOADED: http://farm6.staticflickr.com/5458/6965437392_e3f451c048_d.jpg @ 2021-02-15 20:34:33
 [[file:img/6965437392_e3f451c048_d.jpg]]
+
 Image from: http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/
 
 Example of analyzer result:
