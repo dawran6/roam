@@ -28,3 +28,8 @@ per-thread bindings via the macro binding.
 * Learning materials
 - [[https://iloveponies.github.io/120-hour-epic-sax-marathon/sudoku.html][Sudoku]]
 - [[https://matthewdowney.github.io/astar-in-clojure-find-k-shortest-paths.html][A* in Clojure to Lazily Find the Shortest Paths]]
+* Data-oriented Programming
+- [[https://gist.github.com/levand/c97dd272bfd2f88fe5089eb81f85f98f][Advice about data modeling in Clojure]]
+* UI
+- [[https://github.com/cljfx/cljfx][cljfx]]
+- [[https://github.com/phronmophobic/membrane][phronmophobic/membrane]]
